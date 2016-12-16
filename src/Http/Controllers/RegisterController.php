@@ -21,6 +21,7 @@ class RegisterController extends Controller
             $targetNumber = $this->request->input('phone');
             $verificationCode = $this->generateVerificationCode();
             $this->request->session()->put('VerificationCode', $verificationCode);
+            $this->request->session()->put('VerificationPhoneNumber', $targetNumber);
             $this->request->session()->put('VerificationCodeSendTime', time());
             $this->dispatch(new AlidayuMessageJob($targetNumber, [config('smsregistration.param') => $verificationCode], config('smsregistration.alidayuconfigname')));
             return ['status' => 'success'];
