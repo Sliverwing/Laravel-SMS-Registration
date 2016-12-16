@@ -1,0 +1,13 @@
+{
+    "name": "sliverwing/smsregistration",
+    "description": "Add SMS Validate Before Register For Laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sliverwing",
+            "email": "i@Sliverwing.me"
+        }
+    ],
+    "require": {}
+}
