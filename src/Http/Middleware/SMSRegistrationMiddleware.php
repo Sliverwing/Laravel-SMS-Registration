@@ -3,7 +3,6 @@
 namespace Sliverwing\Registration\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Logging\Log;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 
@@ -24,7 +23,7 @@ class SMSRegistrationMiddleware
         } else {
             $bag = new MessageBag();
             $bag->add('VerificationCode', '请检查您的验证码输入');
-            return redirect('/register')->withInput(
+            return back()->withInput(
                 $request->except('password')
             )->with('errors', $request->session()->get('errors', new ViewErrorBag())->put('default', $bag));
         }
