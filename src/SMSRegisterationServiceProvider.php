@@ -31,6 +31,7 @@ class SMSRegisterationServiceProvider extends ServiceProvider
             $this->publishes([
                 $basePath . '/config/smsregistration.php' => config_path('smsregistration.php'),
                 $basePath . '/migrations/' => database_path('migrations'),
+                $basePath . '/views/' => resource_path('views'),
             ]);
         }
     }
