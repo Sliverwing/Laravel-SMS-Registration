@@ -4,4 +4,5 @@ return [
     'param' => '',
     'expiration' => 60, //Seconds
     'username'=>'email',//Username for login
+    'passwordresetsubmiturl' => '/password/reset/sms',
 ];
