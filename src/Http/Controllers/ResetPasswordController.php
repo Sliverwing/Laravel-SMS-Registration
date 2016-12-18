@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Sliverwing\Registration\Traits\SendVerificationCode;
+use Sliverwing\Alidayu\Jobs\AlidayuMessageJob;
 
 
 class ResetPasswordController extends Controller
@@ -29,11 +30,15 @@ class ResetPasswordController extends Controller
         return redirect('/home');
     }
 
-    private function doValidate(Request $request){
+    protected function doValidate(Request $request){
         return $this->validate($request, [
             'phone' => 'required|exists:users',
             'password' => 'required|confirmed|min:6',
         ]);
+    }
+
+    protected function getJobInstance($targetNumber, $verificationCode){
+        return new AlidayuMessageJob($targetNumber, [config('smsregistration.param') => $verificationCode], config('smsregistration.alidayuconfigname'));
     }
 
     protected function guard()

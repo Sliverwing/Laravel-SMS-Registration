@@ -3,11 +3,10 @@
 namespace Sliverwing\Registration\Traits;
 
 use Illuminate\Http\Request;
-use Sliverwing\Alidayu\Jobs\AlidayuMessageJob;
 
 trait SendVerificationCode{
 
-    private $ValidateMessage;
+    protected $ValidateMessage;
 
     public function sendVerificationCode(Request $request){
         if (!$this->doValidate($request)){
@@ -18,30 +17,32 @@ trait SendVerificationCode{
             $request->session()->put('VerificationCode', $verificationCode);
             $request->session()->put('VerificationPhoneNumber', $targetNumber);
             $request->session()->put('VerificationCodeSendTime', time());
-            $this->dispatch(new AlidayuMessageJob($targetNumber, [config('smsregistration.param') => $verificationCode], config('smsregistration.alidayuconfigname')));
+            $job = $this->getJobInstance($targetNumber, $verificationCode);
+            $this->dispatch($job);
             return ['status' => 'success'];
         }
     }
 
-    private function generateVerificationCode(){
+    protected function generateVerificationCode(){
         $verificationCode = rand(100000, 999999);
         return $verificationCode;
     }
 
-    private function doValidate(Request $request){
+    protected function doValidate(Request $request){
         // TODO Add PhoneNumber Validator
         if (!$request->input('phone', null)){
             $this->ValidateMessage = '请输入手机号';
             return false;
         }
         $lastSentTime = $request->session()->get('VerificationCodeSendTime');
-        if ($lastSentTime){
-            if (time() - $lastSentTime < config('smsregistration.expiration')){
-                $this->ValidateMessage = '您申请验证码过于频繁';
-                return false;
-            }
+        if ($lastSentTime && time() - $lastSentTime < config('smsregistration.expiration')){
+            $this->ValidateMessage = '您申请验证码过于频繁';
+            return false;
         }
         return true;
     }
 
+    protected function getJobInstance($targetNumber, $verificationCode){
+//        Use this trait and ovveride this
+    }
 }
