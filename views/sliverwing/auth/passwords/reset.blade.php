@@ -36,6 +36,7 @@
                                 <div class="col-md-6">
                                     <input id="VerificationCode" type="text" class="form-control" name="VerificationCode" required>
                                     <a href="#" onclick="sendVerificationCode();return false;">获取验证码</a>
+                                    <p id="status"></p>
                                     <script>
                                         function sendVerificationCode(){
                                             var phone = $('#phone').val();
@@ -43,7 +44,12 @@
                                                 alert('请输入正确的手机号!');
                                             } else {
                                                 $.post('/register/VerificationCode', {'_token': $('input[name="_token"]').val(), 'phone': phone}, function(data){
-                                                    alert(data['status']);
+                                                    var _status = $('#status');
+                                                    if (data['status'] == 'success'){
+                                                        _status.removeClass().addClass('text-success').html('消息发送成功');
+                                                    } else {
+                                                        _status.removeClass().addClass('text-danger').html(data['message']);
+                                                    }
                                                 }, 'JSON')
                                             }
                                         }
