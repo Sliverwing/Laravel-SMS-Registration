@@ -39,10 +39,26 @@ trait SendVerificationCode{
             $this->ValidateMessage = '您申请验证码过于频繁';
             return false;
         }
+        if (!$this->additionalValidate($request)){
+            return false;
+        }
         return true;
     }
 
+    /**
+     * @param $targetNumber
+     * @param $verificationCode
+     * @return mixed
+     */
     protected function getJobInstance($targetNumber, $verificationCode){
-//        Use this trait and ovveride this
+//        Use this trait and override this
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    protected function additionalValidate(Request $request){
+        return true;
     }
 }
