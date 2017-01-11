@@ -9,5 +9,9 @@
             "email": "i@Sliverwing.me"
         }
     ],
-    "require": {}
+    "autoload": {
+        "psr-4": {
+            "Sliverwing\\Registration\\": "src/"
+        }
+    }
 }
