@@ -31,7 +31,7 @@ class ResetPasswordController extends Controller
     }
 
     protected function doValidate(Request $request){
-        return $this->validate($request, [
+        $this->validate($request, [
             'phone' => 'required|exists:users',
             'password' => 'required|confirmed|min:6',
         ]);
